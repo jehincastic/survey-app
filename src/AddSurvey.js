@@ -1,47 +1,53 @@
 import React, { Component } from "react";
-import TextField from "@material-ui/core/TextField";
-import axios from "axios";
-import { withStyles } from "@material-ui/styles";
+import Button from "@material-ui/core/Button";
 import Nav from "./Nav";
-import QuestionsForm from "./QuestionsForm";
-import EmailForm from "./EmailForm";
+import { withStyles } from "@material-ui/core";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import img1 from "./1.jpg";
+import img2 from "./2.jpg";
+import img3 from "./3.jpg";
 
-const styles = {
+const styles = () => ({
+    root: {
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center"
+    },
+    formControl: {
+        margin: "15px",
+        minWidth: 120
+    },
+    selectEmpty: {
+        marginTop: "30px"
+    },
+    selectList: {
+        width: "150px"
+    },
+    btn: {
+        width: "80px",
+        position: "relative",
+        top: "20px"
+    },
     heading: {
         color: "#3f51b5"
     },
-    form: {
-        marginTop: "20px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "55vh",
-        overflowY: "scroll",
-        overflowX: "hidden"
-    },
-    surveyInput: {
-        width: "30%"
-    },
-    nextbtn: {
-        position: "relative",
-        top: "-36px"
-    },
-    submitbtn: {
-        position: "relative",
-        top: "56px"
+    tempimg: {
+        display: "block",
+        width: "40vw",
+        margin: "0 auto",
+        marginTop: "40px"
     }
-};
+});
 
 class AddSurvey extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            i: 1,
-            questions: [""],
-            nextQuestions: [],
-            title: "",
-            route: "question",
-            email: ""
+            template: "",
+            img: ""
         };
     }
 
@@ -51,111 +57,73 @@ class AddSurvey extends Component {
         }
     }
 
-    handleChange = e => {
-        const ques = { ...this.state.questions };
-        ques[e.target.name] = e.target.value;
+    handleChange = event => {
+        let i = "";
+        if (event.target.value === 1) {
+            i = img1;
+        } else if (event.target.value === 2) {
+            i = img2;
+        } else if (event.target.value === 3) {
+            i = img3;
+        }
         this.setState({
-            questions: ques
+            [event.target.name]: event.target.value,
+            img: i
         });
     };
 
-    handleTitleChange = e => {
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-    };
-
-    handleNextQuestion = () => {
-        const index = this.state.i + 1;
-        const { classes } = this.props;
-        this.setState({ i: index }, () => {
-            const questionsDisplay = (
-                <TextField
-                    key={index}
-                    id={`standard-question${index}`}
-                    label={`Question-${index}`}
-                    className={classes.surveyInput}
-                    value={this.state.questions[index]}
-                    onChange={this.handleChange}
-                    autoComplete="question"
-                    type="text"
-                    name={index.toString()}
-                    margin="normal"
-                    required
-                />
-            );
-            const q = [...this.state.nextQuestions];
-            q.push(questionsDisplay);
-            this.setState({ nextQuestions: q });
-        });
-    };
-
-    routeChange = () => {
-        this.setState({ route: "email" });
-    };
-
-    routeChangeGoBack = () => {
-        this.setState({ route: "question" });
-    };
-
-    handleSubmit = e => {
-        e.preventDefault();
-        const { questions, title, email } = this.state;
-        const arrayQuestions = Object.values(questions);
-        this.setState(
-            {
-                i: 1,
-                questions: [""],
-                nextQuestions: [],
-                title: "",
-                route: "question",
-                email: ""
-            },
-            () => {
-                axios
-                    .post("http://localhost:4000/survey/add", {
-                        user_id: this.props.user.id,
-                        title: title,
-                        questions: arrayQuestions,
-                        recipients: email
-                    })
-                    .then(res => res.data)
-                    .then(data => {
-                        if (data.message === "Survey Added Successfully") {
-                            this.props.history.push("/dashboard");
-                        } else {
-                            alert("Failed To Add");
-                        }
-                    });
-            }
-        );
+    templateClick = () => {
+        if (this.state.template === "") {
+            alert("Select A Template");
+        } else {
+            const link = "/template" + this.state.template;
+            this.props.history.push(link);
+        }
     };
 
     render() {
         const { classes } = this.props;
-        const { nextQuestions } = this.state;
         return (
             <div>
                 <Nav user={this.props.user} />
-                <h1 className={classes.heading}>Add Survey</h1>
-                {this.state.route === "question" ? (
-                    <QuestionsForm
-                        title={this.state.title}
-                        handleTitleChange={this.handleTitleChange}
-                        questions={this.state.questions[0]}
-                        routeChange={this.routeChange}
-                        handleChange={this.handleChange}
-                        handleNextQuestion={this.handleNextQuestion}
-                        nextQuestions={nextQuestions}
-                        classes={classes}
-                    />
-                ) : (
-                    <EmailForm
-                        email={this.state.email}
-                        routeChangeGoBack={this.routeChangeGoBack}
-                        classes={classes}
-                        handleEmailChange={this.handleTitleChange}
-                        handleSubmit={this.handleSubmit}
+                <h1 className={classes.heading}>Select Template</h1>
+                <form className={classes.root} autoComplete="off">
+                    <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="age-simple">
+                            Select Template
+                        </InputLabel>
+                        <Select
+                            value={this.state.template}
+                            onChange={this.handleChange}
+                            inputProps={{
+                                name: "template",
+                                id: "template-simple"
+                            }}
+                            className={classes.selectList}
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={1}>Template 1</MenuItem>
+                            <MenuItem value={2}>Template 2</MenuItem>
+                            <MenuItem value={3}>Template 3</MenuItem>
+                        </Select>
+                    </FormControl>
+                </form>
+                <Button
+                    onClick={this.templateClick}
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.btn}
+                >
+                    Select
+                </Button>
+                {this.state.template === "" ? null : (
+                    <img
+                        className={classes.tempimg}
+                        src={this.state.img}
+                        alt={`Template-${this.state.template}`}
                     />
                 )}
             </div>

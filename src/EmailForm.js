@@ -26,7 +26,7 @@ const EmailForm = (props) => {
                     color="primary"
                     className={props.classes.submitbtn}
                 >
-                    Finish
+                    Add Survey
                 </Button>
             </form>
             <Button

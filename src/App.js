@@ -9,9 +9,15 @@ import AddSurvey from "./AddSurvey";
 import ViewSurveys from "./ViewSurveys";
 import ViewSingleSurvey from "./ViewSingleSurvey";
 import QuestionDisplay from "./QuestionDisplay";
-import "./App.css";
 import SendMail from "./SendMail";
 import Logout from "./Logout";
+import Template1 from "./Template1";
+import Template2 from "./Template2";
+import Template3 from "./Template3";
+import Temp1QuesDisplay from "./Temp1QuesDisplay";
+import Temp3QuesDisplay from "./Temp3QuesDisplay";
+import Temp2QuesDisplay from "./Temp2QuesDisplay";
+import "./App.css";
 
 class App extends Component {
     constructor(props) {
@@ -123,6 +129,27 @@ class App extends Component {
                     />
                     <Route
                         exact
+                        path="/template1"
+                        render={defaultProps => (
+                            <Template1 user={user} {...defaultProps} />
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/template2"
+                        render={defaultProps => (
+                            <Template2 user={user} {...defaultProps} />
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/template3"
+                        render={defaultProps => (
+                            <Template3 user={user} {...defaultProps} />
+                        )}
+                    />
+                    <Route
+                        exact
                         path="/view"
                         render={defaultProps => (
                             <ViewSurveys user={user} {...defaultProps} />
@@ -147,6 +174,27 @@ class App extends Component {
                         path="/survey/:recid/:surid"
                         render={defaultProps => (
                             <QuestionDisplay user={user} {...defaultProps} />
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/questions-temp1/:recid/:surid"
+                        render={defaultProps => (
+                            <Temp1QuesDisplay user={user} {...defaultProps} />
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/questions-temp2/:recid/:surid"
+                        render={defaultProps => (
+                            <Temp2QuesDisplay user={user} {...defaultProps} />
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/questions-temp3/:recid/:surid"
+                        render={defaultProps => (
+                            <Temp3QuesDisplay user={user} {...defaultProps} />
                         )}
                     />
                     <Route

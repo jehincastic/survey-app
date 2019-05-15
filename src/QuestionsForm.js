@@ -2,7 +2,7 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-const QuestionsForm = (props) => {
+const QuestionsForm = props => {
     return (
         <div>
             <form onSubmit={props.routeChange}>
@@ -19,9 +19,50 @@ const QuestionsForm = (props) => {
                         margin="normal"
                         required
                     />
+                    {props.match.path === "/template2" ? (
+                        <div>
+                            <TextField
+                                id="standard-title"
+                                label="Min Value"
+                                className={props.classes.maxmin}
+                                value={props.minvalue}
+                                onChange={props.handleTitleChange}
+                                autoComplete="question"
+                                type="text"
+                                name="minvalue"
+                                margin="normal"
+                                required
+                            />
+                            <TextField
+                                id="standard-title"
+                                label="Max Value"
+                                className={props.classes.maxmin}
+                                value={props.maxvalue}
+                                onChange={props.handleTitleChange}
+                                autoComplete="question"
+                                type="text"
+                                name="maxvalue"
+                                margin="normal"
+                                required
+                            />{" "}
+                        </div>
+                    ) : props.match.path === "/template3" ? (
+                        <TextField
+                            id="standard-title"
+                            label="Column Title (seperate by commas)"
+                            className={props.classes.surveyInput}
+                            value={props.colTitle}
+                            onChange={props.handleTitleChange}
+                            autoComplete="question"
+                            type="text"
+                            name="colTitle"
+                            margin="normal"
+                            required
+                        />
+                    ) : null}
                     <TextField
                         id="standard-question"
-                        label="Question-1"
+                        label="Question"
                         className={props.classes.surveyInput}
                         value={props.questions}
                         onChange={props.handleChange}

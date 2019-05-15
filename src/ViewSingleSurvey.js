@@ -160,7 +160,7 @@ class ViewSingleSurvey extends Component {
                             </TableHead>
                             <TableBody>
                                 {rRows.map((row, i) => (
-                                    <TableRow key={row.id}>
+                                    <TableRow key={row.id * 1000}>
                                         <TableCell component="th" scope="row">
                                             {row.email}
                                         </TableCell>
