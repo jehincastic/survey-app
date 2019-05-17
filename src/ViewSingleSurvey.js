@@ -54,65 +54,71 @@ class ViewSingleSurvey extends Component {
             )
             .then(res => res.data)
             .then(data => {
-                this.setState(
-                    {
-                        survey: data[0]
-                    },
-                    () => {
-                        const a = [...this.state.qRows];
-                        this.state.survey.questions.map(q => {
-                            a.push(createQuestionData(q));
-                            return true;
-                        });
-                        this.setState({ qRows: a }, () => {
-                            const ansDisplay = [...this.state.answeredList];
-                            this.state.survey.recipients.map(reci => {
-                                const ans = [...reci.answers];
-                                if (ans.length === 0) {
-                                    this.state.survey.questions.map(q => {
-                                        ans.push("--------");
+                if (data.message === "Failed To Find") {
+                    this.props.history.push("/dashboard");
+                } else {
+                    this.setState(
+                        {
+                            survey: data[0]
+                        },
+                        () => {
+                            const a = [...this.state.qRows];
+                            this.state.survey.questions.map(q => {
+                                a.push(createQuestionData(q));
+                                return true;
+                            });
+                            this.setState({ qRows: a }, () => {
+                                const ansDisplay = [...this.state.answeredList];
+                                this.state.survey.recipients.map(reci => {
+                                    const ans = [...reci.answers];
+                                    if (ans.length === 0) {
+                                        this.state.survey.questions.map(q => {
+                                            ans.push("--------");
+                                            return true;
+                                        });
+                                    }
+                                    const ab = [];
+                                    ans.map((a, i) => {
+                                        ab.push(
+                                            <TableCell key={i} align="left">
+                                                {a}
+                                            </TableCell>
+                                        );
                                         return true;
                                     });
-                                }
-                                const ab = [];
-                                ans.map((a,i) => {
-                                    ab.push(
-                                        <TableCell key={i} align="left">{a}</TableCell>
+                                    ansDisplay.push(ab);
+                                    return true;
+                                });
+                                const ques = [...this.state.noOfQuestions];
+                                this.state.survey.questions.map((q, i) => {
+                                    ques.push(
+                                        <TableCell key={i} align="left">
+                                            {`Question ${i + 1}`}
+                                        </TableCell>
                                     );
                                     return true;
                                 });
-                                ansDisplay.push(ab);
-                                return true;
+                                const rows = [...this.state.rRows];
+                                this.state.survey.recipients.map(r => {
+                                    rows.push(
+                                        createResponseData(
+                                            r.email,
+                                            r.responded,
+                                            r.answers
+                                        )
+                                    );
+                                    return true;
+                                });
+                                this.setState({
+                                    noOfQuestions: ques,
+                                    rRows: rows,
+                                    answeredList: ansDisplay
+                                });
                             });
-                            const ques = [...this.state.noOfQuestions];
-                            this.state.survey.questions.map((q, i) => {
-                                ques.push(
-                                    <TableCell key={i} align="left">
-                                        {`Question ${i + 1}`}
-                                    </TableCell>
-                                );
-                                return true;
-                            });
-                            const rows = [...this.state.rRows];
-                            this.state.survey.recipients.map(r => {
-                                rows.push(
-                                    createResponseData(
-                                        r.email,
-                                        r.responded,
-                                        r.answers
-                                    )
-                                );
-                                return true;
-                            });
-                            this.setState({
-                                noOfQuestions: ques,
-                                rRows: rows,
-                                answeredList: ansDisplay
-                            });
-                        });
-                        return true;
-                    }
-                );
+                            return true;
+                        }
+                    );
+                }
             });
     }
 
@@ -128,14 +134,16 @@ class ViewSingleSurvey extends Component {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Number</TableCell>
-                                    <TableCell align="left">Name</TableCell>
+                                    <TableCell align="left">
+                                        Question Name
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {qRows.map((row, i) => (
                                     <TableRow key={row.id}>
                                         <TableCell component="th" scope="row">
-                                            {i+1}
+                                            {i + 1}
                                         </TableCell>
                                         <TableCell component="th" scope="row">
                                             {row.name}
