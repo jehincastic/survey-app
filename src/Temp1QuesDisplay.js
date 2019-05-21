@@ -106,7 +106,7 @@ export class Temp1QuesDisplay extends Component {
             )
             .then(res => res.data)
             .then(data => {
-                if (data.template !== 1) {
+                if (Number(data.template) !== 1) {
                     const link = this.props.match.url.replace(
                         "questions-temp1",
                         "questions-temp" + data.template

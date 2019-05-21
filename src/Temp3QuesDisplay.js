@@ -102,7 +102,7 @@ class QuestionDisplay extends Component {
             )
             .then(res => res.data)
             .then(data => {
-                if (data.template !== 3) {
+                if (Number(data.template) !== 3) {
                     const link = this.props.match.url.replace(
                         "questions-temp3",
                         "questions-temp" + data.template

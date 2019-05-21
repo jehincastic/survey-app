@@ -51,7 +51,7 @@ class ViewSurveys extends Component {
                                 display.push(
                                     <div
                                         key={survey.id}
-                                        className="col-md-4 col-xs-6"
+                                        className="col-md-4 col-xs-6 container-box"
                                     >
                                         <SingleSurveys
                                             handleSurveyClick={

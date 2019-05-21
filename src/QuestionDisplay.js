@@ -12,14 +12,14 @@ class QuestionDisplay extends Component {
             .then(res => res.data)
             .then(data => {
                 if (!data.message) {
-                    if(data.template === 1) {
+                    if(Number(data.template) === 1) {
                         const link = "/questions-temp1/" + this.props.match.params.recid + "/" + this.props.match.params.surid;
                         this.props.history.push(link);
                     }
-                    else if (data.template === 2) {
+                    else if (Number(data.template) === 2) {
                         const link = "/questions-temp2/" + this.props.match.params.recid + "/" + this.props.match.params.surid;
                         this.props.history.push(link);
-                    } else if (data.template === 3) {
+                    } else if (Number(data.template) === 3) {
                         const link = "/questions-temp3/" + this.props.match.params.recid + "/" + this.props.match.params.surid;
                         this.props.history.push(link);
                     }
