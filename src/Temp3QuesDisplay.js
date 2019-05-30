@@ -55,7 +55,7 @@ class QuestionDisplay extends Component {
             const finalAns = ans.map(a => title[a]);
             axios
                 .post(
-                    `http://localhost:4000/survey/${
+                    `https://review-app-29389812321.herokuapp.com/survey/${
                         this.props.match.params.recid
                     }/${this.props.match.params.surid}`,
                     {
@@ -96,7 +96,7 @@ class QuestionDisplay extends Component {
     componentDidMount() {
         axios
             .get(
-                `http://localhost:4000/survey/${
+                `https://review-app-29389812321.herokuapp.com/survey/${
                     this.props.match.params.recid
                 }/${this.props.match.params.surid}`
             )

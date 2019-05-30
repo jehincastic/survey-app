@@ -72,7 +72,7 @@ export class Temp1QuesDisplay extends Component {
         } else {
             axios
                 .post(
-                    `http://localhost:4000/survey/${
+                    `https://review-app-29389812321.herokuapp.com/survey/${
                         this.props.match.params.recid
                     }/${this.props.match.params.surid}`,
                     {
@@ -100,7 +100,7 @@ export class Temp1QuesDisplay extends Component {
     componentDidMount() {
         axios
             .get(
-                `http://localhost:4000/survey/${
+                `https://review-app-29389812321.herokuapp.com/survey/${
                     this.props.match.params.recid
                 }/${this.props.match.params.surid}`
             )

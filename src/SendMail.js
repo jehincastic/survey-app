@@ -29,7 +29,7 @@ class SendMail extends Component {
 
     handleMailSend = id => {
         axios
-            .get(`http://localhost:4000/survey/send?id=${id}`)
+            .get(`https://review-app-29389812321.herokuapp.com/survey/send?id=${id}`)
             .then(res => res.data)
             .then(data => {
                 if (data.message === "Send Successfully") {
@@ -41,7 +41,7 @@ class SendMail extends Component {
     fetchSurveys = () => {
         axios
             .get(
-                `http://localhost:4000/survey/view?user_id=${
+                `https://review-app-29389812321.herokuapp.com/survey/view?user_id=${
                     this.props.user.id
                 }`
             )

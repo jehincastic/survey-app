@@ -45,7 +45,7 @@ class Home extends Component {
             <div>
                 <Nav a={["Login", "Register"]} user={this.props.user} />
                 <h1 className={classes.title}>
-                    Welcome to <span className={classes.titleBold}>NAME!</span>
+                    Welcome to <span className={classes.titleBold}>EMAILIFY!</span>
                 </h1>
                 <Link className={classes.link} to="/register">
                     <Button variant="contained" color="primary">

@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
-import axios from "axios";
 import { withStyles } from "@material-ui/styles";
 import Nav from "./Nav";
 import QuestionsForm from "./QuestionsForm";
-import EmailForm from "./EmailForm";
 import Clear from "@material-ui/icons/Clear";
 
 const styles = {
@@ -60,8 +58,6 @@ class TemplateTwo extends Component {
             questions: [""],
             nextQuestions: [],
             title: "",
-            route: "question",
-            email: "",
             maxvalue: "",
             minvalue: ""
         };
@@ -128,50 +124,25 @@ class TemplateTwo extends Component {
         });
     };
 
-    routeChange = () => {
-        this.setState({ route: "email" });
-    };
-
-    routeChangeGoBack = () => {
-        this.setState({ route: "question" });
-    };
-
     handleSubmit = e => {
         e.preventDefault();
-        const { questions, title, email, maxvalue, minvalue } = this.state;
+        const { questions, maxvalue, minvalue } = this.state;
         const arrayQuestions = questions.filter(Boolean);
-        this.setState(
-            {
-                i: 1,
-                questions: [""],
-                nextQuestions: [],
-                title: "",
-                route: "question",
-                email: "",
-                maxvalue: "",
-                minvalue: ""
-            },
-            () => {
-                axios
-                    .post("http://localhost:4000/survey/add", {
-                        user_id: this.props.user.id,
-                        title: title,
-                        questions: arrayQuestions,
-                        recipients: email,
-                        maxvalue: maxvalue,
-                        minvalue: minvalue,
-                        template: 2
-                    })
-                    .then(res => res.data)
-                    .then(data => {
-                        if (data.message === "Survey Added Successfully") {
-                            this.props.history.push("/dashboard");
-                        } else {
-                            alert("Failed To Add");
-                        }
-                    });
-            }
-        );
+        const obj = {
+            questions: arrayQuestions,
+            maxvalue,
+            minvalue
+        };
+        this.setState({
+            i: 1,
+            questions: [""],
+            nextQuestions: [],
+            title: "",
+            maxvalue: "",
+            minvalue: ""
+        });
+        localStorage.setItem("template2", JSON.stringify(obj));
+        this.props.history.push("/template3");
     };
 
     render() {
@@ -180,32 +151,22 @@ class TemplateTwo extends Component {
         return (
             <div>
                 <Nav user={this.props.user} />
-                <h1 className={classes.heading}>Add Survey</h1>
-                {this.state.route === "question" ? (
-                    <div>
-                        <QuestionsForm
-                            maxvalue={this.props.maxvalue}
-                            minvalue={this.props.minvalue}
-                            match={this.props.match}
-                            title={this.state.title}
-                            handleTitleChange={this.handleTitleChange}
-                            questions={this.state.questions[0]}
-                            routeChange={this.routeChange}
-                            handleChange={this.handleChange}
-                            handleNextQuestion={this.handleNextQuestion}
-                            nextQuestions={nextQuestions}
-                            classes={classes}
-                        />
-                    </div>
-                ) : (
-                    <EmailForm
-                        email={this.state.email}
-                        routeChangeGoBack={this.routeChangeGoBack}
-                        classes={classes}
-                        handleEmailChange={this.handleTitleChange}
+                <h1 className={classes.heading}>Template 2</h1>
+                <div>
+                    <QuestionsForm
+                        maxvalue={this.props.maxvalue}
+                        minvalue={this.props.minvalue}
+                        match={this.props.match}
+                        title={this.state.title}
+                        handleTitleChange={this.handleTitleChange}
+                        questions={this.state.questions[0]}
                         handleSubmit={this.handleSubmit}
+                        handleChange={this.handleChange}
+                        handleNextQuestion={this.handleNextQuestion}
+                        nextQuestions={nextQuestions}
+                        classes={classes}
                     />
-                )}
+                </div>
             </div>
         );
     }

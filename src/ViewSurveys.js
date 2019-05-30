@@ -34,7 +34,7 @@ class ViewSurveys extends Component {
     fetchSurveys = () => {
         axios
             .get(
-                `http://localhost:4000/survey/view?user_id=${
+                `https://review-app-29389812321.herokuapp.com/survey/view?user_id=${
                     this.props.user.id
                 }`
             )

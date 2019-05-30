@@ -54,6 +54,8 @@ class AddSurvey extends Component {
     componentDidMount() {
         if (this.props.user.email === "") {
             this.props.history.push("/login");
+        } else {
+            this.props.history.push("/template1");
         }
     }
 

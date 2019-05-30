@@ -61,7 +61,7 @@ class App extends Component {
     };
 
     handleLogOut = () => {
-        localStorage.clear();
+        localStorage.removeItem("token");
         this.setState(
             {
                 loggedIn: false,

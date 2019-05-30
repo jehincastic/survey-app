@@ -134,8 +134,21 @@ class TemplateThree extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        const { questions, colTitle, title, email } = this.state;
+        const { questions, colTitle, email } = this.state;
         const arrayQuestions = questions.filter(Boolean);
+        const obj = {
+            colTitle,
+            questions: arrayQuestions
+        };
+        localStorage.setItem("template3", JSON.stringify(obj));
+        localStorage.setItem("emails", email);
+        const survey = {
+            title: localStorage.getItem("title"),
+            template1: JSON.parse(localStorage.getItem("template1")),
+            template2: JSON.parse(localStorage.getItem("template2")),
+            template3: JSON.parse(localStorage.getItem("template3")),
+            emails: localStorage.getItem("emails")
+        };
         this.setState(
             {
                 i: 1,
@@ -148,21 +161,21 @@ class TemplateThree extends Component {
             },
             () => {
                 axios
-                    .post("http://localhost:4000/survey/add", {
-                        user_id: this.props.user.id,
-                        title: title,
-                        questions: arrayQuestions,
-                        recipients: email,
-                        colTitle: colTitle,
-                        template: 3
+                    .post("https://review-app-29389812321.herokuapp.com/survey/add", {
+                        survey,
+                        user_id: this.props.user.id
                     })
                     .then(res => res.data)
                     .then(data => {
-                        if (data.message === "Survey Added Successfully") {
+                        if(data.message === "Survey Added Successfully") {
                             this.props.history.push("/dashboard");
                         } else {
                             alert("Failed To Add");
+                            this.props.history.push("/dashboard");
                         }
+                    })
+                    .catch(function(error) {
+                        console.log(error);
                     });
             }
         );
@@ -174,7 +187,7 @@ class TemplateThree extends Component {
         return (
             <div>
                 <Nav user={this.props.user} />
-                <h1 className={classes.heading}>Add Survey</h1>
+                <h1 className={classes.heading}>Template 3</h1>
                 {this.state.route === "question" ? (
                     <QuestionsForm
                         colTitle={this.props.colTitle}
@@ -182,7 +195,7 @@ class TemplateThree extends Component {
                         title={this.state.title}
                         handleTitleChange={this.handleTitleChange}
                         questions={this.state.questions[0]}
-                        routeChange={this.routeChange}
+                        handleSubmit={this.routeChange}
                         handleChange={this.handleChange}
                         handleNextQuestion={this.handleNextQuestion}
                         nextQuestions={nextQuestions}

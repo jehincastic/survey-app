@@ -13,7 +13,16 @@ const styles = {
 class Dashboard extends Component {
     componentDidMount() {
         if (this.props.user.email === "") {
+            localStorage.removeItem("template1");
+            localStorage.removeItem("template2");
+            localStorage.removeItem("template3");
+            localStorage.removeItem("title");
+            localStorage.removeItem("emails");
             this.props.history.push("/login");
+        } else {
+            localStorage.removeItem("template1");
+            localStorage.removeItem("template2");
+            localStorage.removeItem("template3");
         }
     }
     render() {

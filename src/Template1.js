@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
-import axios from "axios";
 import { withStyles } from "@material-ui/styles";
 import Nav from "./Nav";
 import QuestionsForm from "./QuestionsForm";
-import EmailForm from "./EmailForm";
 import Clear from "@material-ui/icons/Clear";
 
 const styles = {
@@ -56,9 +54,7 @@ class TemplateOne extends Component {
             i: 0,
             questions: [""],
             nextQuestions: [],
-            title: "",
-            route: "question",
-            email: ""
+            title: ""
         };
     }
 
@@ -123,46 +119,26 @@ class TemplateOne extends Component {
         });
     };
 
-    routeChange = () => {
-        this.setState({ route: "email" });
-    };
-
     routeChangeGoBack = () => {
         this.setState({ route: "question" });
     };
 
     handleSubmit = e => {
         e.preventDefault();
-        const { questions, title, email } = this.state;
+        const { questions, title } = this.state;
         const arrayQuestions = questions.filter(Boolean);
-        this.setState(
-            {
-                i: 1,
-                questions: [""],
-                nextQuestions: [],
-                title: "",
-                route: "question",
-                email: ""
-            },
-            () => {
-                axios
-                    .post("http://localhost:4000/survey/add", {
-                        user_id: this.props.user.id,
-                        title: title,
-                        questions: arrayQuestions,
-                        recipients: email,
-                        template: 1
-                    })
-                    .then(res => res.data)
-                    .then(data => {
-                        if (data.message === "Survey Added Successfully") {
-                            this.props.history.push("/dashboard");
-                        } else {
-                            alert("Failed To Add");
-                        }
-                    });
-            }
-        );
+        const obj = {
+            questions: arrayQuestions
+        };
+        this.setState({
+            i: 0,
+            questions: [""],
+            nextQuestions: [],
+            title: ""
+        });
+        localStorage.setItem("template1", JSON.stringify(obj));
+        localStorage.setItem("title", title);
+        this.props.history.push("/template2");
     };
 
     render() {
@@ -171,28 +147,18 @@ class TemplateOne extends Component {
         return (
             <div>
                 <Nav user={this.props.user} />
-                <h1 className={classes.heading}>Add Survey</h1>
-                {this.state.route === "question" ? (
-                    <QuestionsForm
-                        match={this.props.match}
-                        title={this.state.title}
-                        handleTitleChange={this.handleTitleChange}
-                        questions={this.state.questions[0]}
-                        routeChange={this.routeChange}
-                        handleChange={this.handleChange}
-                        handleNextQuestion={this.handleNextQuestion}
-                        nextQuestions={nextQuestions}
-                        classes={classes}
-                    />
-                ) : (
-                    <EmailForm
-                        email={this.state.email}
-                        routeChangeGoBack={this.routeChangeGoBack}
-                        classes={classes}
-                        handleEmailChange={this.handleTitleChange}
-                        handleSubmit={this.handleSubmit}
-                    />
-                )}
+                <h1 className={classes.heading}>Template 1</h1>
+                <QuestionsForm
+                    match={this.props.match}
+                    title={this.state.title}
+                    handleTitleChange={this.handleTitleChange}
+                    questions={this.state.questions[0]}
+                    handleSubmit={this.handleSubmit}
+                    handleChange={this.handleChange}
+                    handleNextQuestion={this.handleNextQuestion}
+                    nextQuestions={nextQuestions}
+                    classes={classes}
+                />
             </div>
         );
     }

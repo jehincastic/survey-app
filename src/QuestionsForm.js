@@ -3,22 +3,28 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 const QuestionsForm = props => {
+    let title = null;
+    if (props.match.path === "/template1") {
+        title = (
+            <TextField
+                id="standard-title"
+                label="Survey Title"
+                className={props.classes.surveyInput}
+                value={props.title}
+                onChange={props.handleTitleChange}
+                autoComplete="question"
+                type="text"
+                name="title"
+                margin="normal"
+                required
+            />
+        );
+    }
     return (
         <div>
-            <form onSubmit={props.routeChange}>
+            <form onSubmit={props.handleSubmit}>
                 <div className={props.classes.form}>
-                    <TextField
-                        id="standard-title"
-                        label="Survey Title"
-                        className={props.classes.surveyInput}
-                        value={props.title}
-                        onChange={props.handleTitleChange}
-                        autoComplete="question"
-                        type="text"
-                        name="title"
-                        margin="normal"
-                        required
-                    />
+                    {title}
                     {props.match.path === "/template2" ? (
                         <div>
                             <TextField

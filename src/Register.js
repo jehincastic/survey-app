@@ -80,7 +80,7 @@ class Register extends Component {
             name: ""
         });
         axios
-            .post("http://localhost:4000/register", {
+            .post("https://review-app-29389812321.herokuapp.com/register", {
                 name: name,
                 email: email,
                 password: password

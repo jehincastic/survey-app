@@ -148,7 +148,7 @@ class Nav extends Component {
                                 variant="h6"
                                 color="inherit"
                             >
-                                NAME
+                                EMAILIFY
                             </Typography>
                         </Link>
                         {/* <Link className={classes.link} to="/login">

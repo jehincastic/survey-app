@@ -48,7 +48,7 @@ class ViewSingleSurvey extends Component {
     componentDidMount() {
         axios
             .get(
-                `http://localhost:4000/survey/view/${
+                `https://review-app-29389812321.herokuapp.com/survey/view/${
                     this.props.match.params.id
                 }`
             )
@@ -173,7 +173,7 @@ class ViewSingleSurvey extends Component {
                                             {row.email}
                                         </TableCell>
                                         <TableCell component="th" scope="row">
-                                            {row.responded ? "Yes" : "No"}
+                                            {Number(row.responded) ? "Yes" : "No"}
                                         </TableCell>
                                         {this.state.answeredList[i]}
                                     </TableRow>
